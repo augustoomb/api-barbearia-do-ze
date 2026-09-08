@@ -70,7 +70,7 @@ Como gestor da barbearia, quero atualizar as informações de um serviço para m
 
 **Acceptance Scenarios**:
 
-1. **Given** que o serviço existe e os novos dados são válidos, **When** o gestor solicita a atualização, **Then** o serviço é atualizado e a consulta posterior retorna os novos valores.
+1. **Given** que o serviço existe e o gestor informa apenas os campos que deseja alterar com valores válidos, **When** ele solicita a atualização, **Then** apenas os campos informados são modificados e a consulta posterior retorna os valores atualizados mantendo os demais inalterados.
 2. **Given** que o gestor altera o nome para um valor já utilizado por outro serviço ativo, **When** ele solicita a atualização, **Then** a atualização é recusada com mensagem indicando que o nome deve ser único entre os serviços ativos.
 3. **Given** que o gestor informa duração igual a zero ou negativa durante a atualização, **When** ele solicita a atualização, **Then** a atualização é recusada com mensagem indicando que a duração deve ser maior que zero.
 4. **Given** que o gestor informa preço negativo durante a atualização, **When** ele solicita a atualização, **Then** a atualização é recusada com mensagem indicando que o preço não pode ser negativo.
@@ -89,6 +89,7 @@ Como gestor da barbearia, quero ativar ou desativar um serviço para controlar q
 
 1. **Given** que o serviço está ativo, **When** o gestor solicita a desativação, **Then** o serviço passa para inativo e não aparece como disponível para novos agendamentos.
 2. **Given** que o serviço está inativo, **When** o gestor solicita a ativação, **Then** o serviço passa para ativo e passa a aparecer como disponível para novos agendamentos, desde que não haja outro serviço ativo com o mesmo nome.
+3. **Given** que o serviço já está no status solicitado, **When** o gestor repete a operação de ativação ou desativação, **Then** o sistema retorna sucesso sem alterar o serviço.
 3. **Given** que o gestor tenta ativar um serviço inativo com nome igual ao de outro serviço já ativo, **When** ele solicita a ativação, **Then** a ativação é recusada com mensagem indicando que o nome deve ser único entre os serviços ativos.
 
 ---
@@ -100,6 +101,9 @@ Como gestor da barbearia, quero ativar ou desativar um serviço para controlar q
 - O nome de um serviço inativo pode ser reutilizado para um novo serviço ativo? Sim, desde que não exista outro serviço ativo com o mesmo nome.
 - Qual o comportamento esperado ao tentar atualizar um serviço inexistente? O sistema deve informar que o serviço não foi encontrado.
 - A duração deve ser informada em minutos inteiros ou aceita frações? Será assumido que a duração é informada em minutos e aceita valores inteiros positivos.
+- Como a unicidade de nome trata variações como "Corte", "corte" e "Corte "? O sistema deve considerar esses valores como duplicados após normalização, recusando o cadastro, atualização ou ativação que gere conflito.
+- O que acontece se o gestor enviar uma atualização sem informar nenhum campo? O sistema deve recusar a operação, pois não há alterações a aplicar.
+- A operação de ativar/desativar deve aceitar chamadas repetidas? Sim, a operação deve ser idempotente, retornando sucesso sem modificar o serviço quando ele já estiver no status desejado.
 
 ## Requirements *(mandatory)*
 
@@ -107,18 +111,18 @@ Como gestor da barbearia, quero ativar ou desativar um serviço para controlar q
 
 - **FR-001**: O sistema DEVE permitir o cadastro de um novo serviço contendo nome, descrição opcional, duração estimada em minutos, preço e status ativo.
 - **FR-002**: O sistema DEVE exigir que o nome do serviço seja informado no cadastro.
-- **FR-003**: O sistema DEVE garantir que o nome do serviço seja único entre todos os serviços ativos.
+- **FR-003**: O sistema DEVE garantir que o nome do serviço seja único entre todos os serviços ativos, considerando uma comparação normalizada que ignore diferenças de maiúsculas/minúsculas, acentos e espaços em branco no início ou no fim do nome.
 - **FR-004**: O sistema DEVE rejeitar duração igual a zero ou negativa, exigindo que a duração seja maior que zero.
-- **FR-005**: O sistema DEVE rejeitar preço negativo, exigindo que o preço seja zero ou positivo.
+- **FR-005**: O sistema DEVE rejeitar preço negativo e deve aceitar apenas valores em reais (R$) com até duas casas decimais.
 - **FR-006**: O sistema DEVE permitir a consulta da lista de todos os serviços cadastrados.
 - **FR-007**: O sistema DEVE permitir a consulta dos dados de um serviço específico por meio de um identificador único.
-- **FR-008**: O sistema DEVE permitir a atualização dos dados de um serviço existente, respeitando as mesmas regras de validação do cadastro.
-- **FR-009**: O sistema DEVE permitir ativar ou desativar um serviço existente.
+- **FR-008**: O sistema DEVE permitir a atualização parcial dos dados de um serviço existente, aplicando as regras de validação do cadastro apenas aos campos efetivamente informados, sem permitir a alteração do status.
+- **FR-009**: O sistema DEVE permitir ativar ou desativar um serviço existente por meio de uma operação dedicada, aceitando chamadas repetidas para o mesmo status sem retornar erro (idempotente).
 - **FR-010**: O sistema DEVE garantir que serviços inativos não apareçam como disponíveis para novos agendamentos.
 
 ### Key Entities *(include if feature involves data)*
 
-- **Serviço**: Representa um serviço oferecido pela barbearia. Atributos: nome, descrição opcional, duração estimada em minutos, preço, status (ativo ou inativo) e identificador único.
+- **Serviço**: Representa um serviço oferecido pela barbearia. Atributos: nome, descrição opcional, duração estimada em minutos, preço em reais (R$) com até duas casas decimais, status (ativo ou inativo) e identificador único. A unicidade do nome entre serviços ativos é avaliada de forma normalizada (ignorando case, acentos e espaços externos).
 
 ## Success Criteria *(mandatory)*
 
@@ -130,11 +134,21 @@ Como gestor da barbearia, quero ativar ou desativar um serviço para controlar q
 - **SC-004**: Serviços inativos não são oferecidos como opção em nenhum novo agendamento.
 - **SC-005**: O gestor consegue ativar ou desativar um serviço com no máximo 2 ações.
 
+## Clarifications
+
+### Session 2026-09-08
+
+- **Q:** A regra de unicidade do nome entre serviços ativos deve considerar normalização (ignorar maiúsculas/minúsculas, acentos e espaços extras) ou deve ser uma comparação literal/exata? → **A:** Normalizar nome (ignorar case, acentos e espaços externos).
+- **Q:** A atualização de um serviço deve permitir alteração parcial de campos ou todos os campos editáveis devem ser informados a cada atualização? → **A:** Atualização parcial (enviar apenas os campos que devem ser alterados).
+- **Q:** Durante a atualização parcial de um serviço, o gestor pode alterar o status (ativo/inativo) diretamente, ou essa mudança só pode ocorrer pela operação dedicada de ativar/desativar? → **A:** O status só pode ser alterado pela operação dedicada de ativar/desativar.
+- **Q:** Qual deve ser a precisão máxima aceita para o preço de um serviço e qual moeda será utilizada? → **A:** Preço em reais (R$) com até duas casas decimais.
+- **Q:** A operação de ativar ou desativar um serviço deve ser idempotente, ou seja, deve aceitar ativar um serviço já ativo (e desativar um já inativo) sem retornar erro? → **A:** Sim, a operação deve ser idempotente.
+
 ## Assumptions
 
 - A feature é exclusiva para gestores da barbearia; controle de permissões detalhado será tratado em feature futura.
 - O identificador único do serviço é gerado pelo sistema e não precisa ser informado pelo usuário.
-- O preço zero é permitido para representar serviços gratuitos ou promocionais.
+- O preço zero é permitido para representar serviços gratuitos ou promocionais, e o preço deve ser informado em reais (R$) com até duas casas decimais.
 - A duração é informada em minutos inteiros positivos.
 - Serviços inativos continuam aparecendo na lista geral de consulta para fins de histórico e gestão, mas não estão disponíveis para novos agendamentos.
 - A exclusão física de serviços não faz parte do escopo desta feature.

@@ -9,6 +9,11 @@ Sync Impact Report
 
 # Barbearia do Zé API Constitution
 
+## Idioma e Comunicação
+
+1. **Idioma Principal:** Todos os artefatos gerados pelo Spec Kit (incluindo `spec.md`, `plan.md`, `tasks.md`, comentarios, informaçoes de promp, relatórios de análise, histórias de usuário e critérios de aceitação) DEVEM ser escritos em **Português do Brasil (pt-BR)**.
+2. **Código e Comentários:** Elementos de código (nomes de variáveis, funções, classes e arquivos) e seus comentários técnicos devem ser mantidos em **Inglês** por padrão de mercado.
+
 ## Core Principles
 
 ### I. Arquitetura em Camadas

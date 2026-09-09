@@ -66,8 +66,7 @@ src/main/java/com/barbeariadose/api/
 ├── domain/
 │   └── service/
 │       ├── ServiceEntity.java
-│       ├── ServiceRepository.java
-│       └── ServiceStatus.java
+│       └── ServiceRepository.java
 ├── application/
 │   └── service/
 │       ├── ServiceService.java

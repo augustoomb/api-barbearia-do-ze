@@ -90,7 +90,7 @@ Como gestor da barbearia, quero ativar ou desativar um serviço para controlar q
 1. **Given** que o serviço está ativo, **When** o gestor solicita a desativação, **Then** o serviço passa para inativo e não aparece como disponível para novos agendamentos.
 2. **Given** que o serviço está inativo, **When** o gestor solicita a ativação, **Then** o serviço passa para ativo e passa a aparecer como disponível para novos agendamentos, desde que não haja outro serviço ativo com o mesmo nome.
 3. **Given** que o serviço já está no status solicitado, **When** o gestor repete a operação de ativação ou desativação, **Then** o sistema retorna sucesso sem alterar o serviço.
-3. **Given** que o gestor tenta ativar um serviço inativo com nome igual ao de outro serviço já ativo, **When** ele solicita a ativação, **Then** a ativação é recusada com mensagem indicando que o nome deve ser único entre os serviços ativos.
+4. **Given** que o gestor tenta ativar um serviço inativo com nome igual ao de outro serviço já ativo, **When** ele solicita a ativação, **Then** a ativação é recusada com mensagem indicando que o nome deve ser único entre os serviços ativos.
 
 ---
 
@@ -122,7 +122,7 @@ Como gestor da barbearia, quero ativar ou desativar um serviço para controlar q
 
 ### Key Entities *(include if feature involves data)*
 
-- **Serviço**: Representa um serviço oferecido pela barbearia. Atributos: nome, descrição opcional, duração estimada em minutos, preço em reais (R$) com até duas casas decimais, status (ativo ou inativo) e identificador único. A unicidade do nome entre serviços ativos é avaliada de forma normalizada (ignorando case, acentos e espaços externos).
+- **Serviço**: Representa um serviço oferecido pela barbearia. Atributos: nome, descrição opcional, duração estimada em minutos, preço em reais (R$) com até duas casas decimais, flag booleana `active` indicando se está ativo ou inativo, e identificador único. A unicidade do nome entre serviços ativos é avaliada de forma normalizada (ignorando case, acentos e espaços externos).
 
 ## Success Criteria *(mandatory)*
 

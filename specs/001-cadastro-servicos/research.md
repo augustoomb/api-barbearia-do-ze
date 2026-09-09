@@ -31,11 +31,13 @@
 
 ### 4. Status ativo/inativo
 
-**Decision**: Representar o status como `BOOLEAN` no banco (`active`) ou `VARCHAR` com constraint (`ACTIVE`, `INACTIVE`). Nesta feature, opta-se por `BOOLEAN` por simplicidade, mapeado para enum `ServiceStatus` no domínio.
+**Decision**: Representar o status como `BOOLEAN` no banco (`active`) e como `boolean` no domínio.
 
-**Rationale**: Apenas dois estados são necessários; booleano é suficiente e eficiente. O enum no domínio preserva legibilidade.
+**Rationale**: Apenas dois estados são necessários; booleano é suficiente e eficiente tanto no banco quanto no código, evitando conversões desnecessárias.
 
-**Alternatives considered**: Tabela de status separada — rejeitado por over-engineering para apenas dois estados.
+**Alternatives considered**:
+- Enum `ServiceStatus` no domínio — rejeitado para manter alinhamento direto com a coluna booleana e reduzir complexidade.
+- `VARCHAR` com constraint no banco — rejeitado por não agregar valor para apenas dois estados.
 
 ### 5. Duração em minutos
 

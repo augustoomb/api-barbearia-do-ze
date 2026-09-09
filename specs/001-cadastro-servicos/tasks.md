@@ -42,10 +42,9 @@ description: "Task list for implementing the Cadastro de Serviços feature"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T003 [P] Create Flyway migration `src/main/resources/db/migration/V1__create_services_table.sql` with `services` table matching data-model.md
-- [ ] T004 [P] Create `src/main/java/com/barbeariadose/api/domain/service/ServiceStatus.java` enum with `ACTIVE` and `INACTIVE` values
-- [ ] T005 [P] Create `src/main/java/com/barbeariadose/api/domain/service/ServiceEntity.java` JPA entity with all fields and lifecycle timestamps
-- [ ] T006 [P] Create `src/main/java/com/barbeariadose/api/domain/service/ServiceRepository.java` Spring Data JPA interface with query method to find active services
+- [ ] T003 [P] Create Flyway migration `src/main/resources/db/migration/V1__create_services_table.sql` with `services` table matching data-model.md, including rollback instruction `DROP TABLE IF EXISTS services;`
+- [ ] T005 [P] Create `src/main/java/com/barbeariadose/api/domain/service/ServiceEntity.java` JPA entity with all fields and lifecycle timestamps, using `boolean active` field
+- [ ] T006 [P] Create `src/main/java/com/barbeariadose/api/domain/service/ServiceRepository.java` Spring Data JPA interface with `findAllByActiveTrue()` and `findAllActive()` query methods to support future scheduling features
 - [ ] T007 [P] Create `src/main/java/com/barbeariadose/api/domain/service/NameNormalizer.java` utility to normalize service names (lowercase, remove accents, trim)
 - [ ] T008 [P] Create domain exceptions in `src/main/java/com/barbeariadose/api/domain/service/`: `ServiceNotFoundException`, `DuplicateServiceNameException`, and `InvalidServiceException`
 - [ ] T009 [P] Create request/response DTOs in `src/main/java/com/barbeariadose/api/application/service/`: `CreateServiceRequest.java`, `UpdateServiceRequest.java`, and `ServiceResponse.java`

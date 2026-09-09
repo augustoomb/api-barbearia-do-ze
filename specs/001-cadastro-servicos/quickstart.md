@@ -1,6 +1,6 @@
 # Quickstart: Cadastro de Serviços
 
-## Prerequisites
+## Pré-requisitos
 
 - Docker e Docker Compose instalados
 - Java 21 e Maven instalados
@@ -8,21 +8,21 @@
 
 ## Setup
 
-1. Start the infrastructure:
+1. Inicie a infraestrutura:
 
 ```bash
 docker compose up -d postgres
 ```
 
-2. Run the application:
+2. Execute a aplicação:
 
 ```bash
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-## Validation Scenarios
+## Cenários de Validação
 
-### 1. Create a service
+### 1. Criar um serviço
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/services \
@@ -35,17 +35,17 @@ curl -X POST http://localhost:8080/api/v1/services \
   }'
 ```
 
-**Expected**: HTTP 201 with the created service and `active: true`.
+**Esperado**: HTTP 201 com o serviço criado e `active: true`.
 
-### 2. List services
+### 2. Listar serviços
 
 ```bash
 curl http://localhost:8080/api/v1/services
 ```
 
-**Expected**: HTTP 200 with an array containing the created service.
+**Esperado**: HTTP 200 com um array contendo o serviço criado.
 
-### 3. Update service price
+### 3. Atualizar o preço do serviço
 
 ```bash
 curl -X PATCH http://localhost:8080/api/v1/services/{id} \
@@ -53,9 +53,9 @@ curl -X PATCH http://localhost:8080/api/v1/services/{id} \
   -d '{"price": 40.00}'
 ```
 
-**Expected**: HTTP 200 with updated price and other fields unchanged.
+**Esperado**: HTTP 200 com o preço atualizado e os demais campos inalterados.
 
-### 4. Try duplicate active name
+### 4. Tentar nome ativo duplicado
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/services \
@@ -67,34 +67,34 @@ curl -X POST http://localhost:8080/api/v1/services \
   }'
 ```
 
-**Expected**: HTTP 409 indicating an active service with the same normalized name already exists.
+**Esperado**: HTTP 409 indicando que já existe um serviço ativo com o mesmo nome normalizado.
 
-### 5. Deactivate service
+### 5. Desativar serviço
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/services/{id}/deactivate
 ```
 
-**Expected**: HTTP 200 with `active: false`.
+**Esperado**: HTTP 200 com `active: false`.
 
-### 6. Re-activation idempotency
+### 6. Idempotência de reativação
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/services/{id}/activate
 curl -X POST http://localhost:8080/api/v1/services/{id}/activate
 ```
 
-**Expected**: Both requests return HTTP 200 and the service remains active.
+**Esperado**: Ambas as requisições retornam HTTP 200 e o serviço permanece ativo.
 
-## Running Tests
+## Execução dos Testes
 
 ```bash
 ./mvnw test
 ```
 
-**Expected**: All unit and integration tests pass.
+**Esperado**: Todos os testes unitários e de integração passam.
 
-## Notes
+## Observações
 
-- Replace `{id}` with the actual service UUID returned by creation.
-- See [data-model.md](../data-model.md) for entity details and [contracts/api.md](./api.md) for full API contracts.
+- Substitua `{id}` pelo UUID real do serviço retornado na criação.
+- Veja [data-model.md](../data-model.md) para detalhes da entidade e [contracts/api.md](./api.md) para os contratos completos da API.

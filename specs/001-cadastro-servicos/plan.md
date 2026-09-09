@@ -1,42 +1,42 @@
-# Implementation Plan: Cadastro de Serviços
+# Plano de Implementação: Cadastro de Serviços
 
-**Branch**: `001-cadastro-serviços` | **Date**: 2026-09-08 | **Spec**: [spec.md](./spec.md)
+**Branch**: `001-cadastro-serviços` | **Data**: 2026-09-08 | **Spec**: [spec.md](./spec.md)
 
-**Input**: Feature specification from `/specs/001-cadastro-servicos/spec.md`
+**Entrada**: Especificação da feature em `/specs/001-cadastro-servicos/spec.md`
 
-## Summary
+## Resumo
 
-Implementar o cadastro e gestão de serviços oferecidos pela barbearia, permitindo criar, consultar, atualizar parcialmente e ativar/desativar serviços. A solução seguirá a arquitetura em camadas definida na Constitution (Controller, Service, Repository, Domain/Model), utilizará DTOs com validação explícita, Spring Data JPA com PostgreSQL e Flyway para persistência, e será coberta por testes unitários e de integração.
+Implementar o cadastro e a gestão dos serviços oferecidos pela barbearia, permitindo criar, consultar, atualizar parcialmente e ativar/desativar serviços. A solução seguirá a arquitetura em camadas definida na Constitution (Controller, Service, Repository e Domain/Model), utilizará DTOs com validação explícita, Spring Data JPA com PostgreSQL e Flyway para persistência, e será coberta por testes unitários e de integração.
 
-## Technical Context
+## Contexto Técnico
 
-**Language/Version**: Java 21 (LTS)
+**Linguagem/Versão**: Java 21 (LTS)
 
-**Primary Dependencies**: Spring Boot 4.x, Spring WebMvc, Spring Data JPA, Spring Validation (Bean Validation/Jakarta Validation), Lombok, MapStruct
+**Dependências Principais**: Spring Boot 4.x, Spring WebMvc, Spring Data JPA, Spring Validation (Bean Validation/Jakarta Validation), Lombok, MapStruct
 
-**Storage**: PostgreSQL (principal), H2 (testes automatizados)
+**Armazenamento**: PostgreSQL (principal), H2 (testes automatizados)
 
-**Testing**: JUnit 5, Mockito, `@SpringBootTest` para testes de integração
+**Testes**: JUnit 5, Mockito, `@SpringBootTest` para testes de integração
 
-**Target Platform**: Servidor Linux via Docker Compose
+**Plataforma Alvo**: Servidor Linux via Docker Compose
 
-**Project Type**: web-service (API REST)
+**Tipo de Projeto**: web-service (API REST)
 
-**Performance Goals**: Consulta de lista com até 100 serviços em menos de 2 segundos (conforme SC-003 do spec)
+**Metas de Performance**: Consulta de lista com até 100 serviços em menos de 2 segundos (conforme SC-003 do spec)
 
-**Constraints**: Respeitar stack padronizada da Constitution; todas as alterações de schema via Flyway; sem código sem testes
+**Restrições**: Respeitar a stack padronizada da Constitution; todas as alterações de schema via Flyway; não há código sem testes
 
-**Scale/Scope**: Ambiente de barbearia com dezenas de serviços; não há necessidade de paginação nesta feature
+**Escala/Escopo**: Ambiente de barbearia com dezenas de serviços; não há necessidade de paginação nesta feature
 
-## Constitution Check
+## Verificação da Constitution
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*GATE: Deve passar antes da Pesquisa (Phase 0). Re-verificar após o Design (Phase 1).*
 
 | Princípio | Status | Observação |
 |-----------|--------|------------|
 | I. Arquitetura em Camadas | ✅ Pass | Controller, Service, Repository e Domain/Model serão utilizados |
 | II. Stack Tecnológica Padronizada | ✅ Pass | Java 21, Spring Boot, Spring WebMvc, Spring Data JPA, Spring Validation, PostgreSQL, Flyway, H2 (testes), Lombok |
-| III. Qualidade e Testes | ✅ Pass | Testes unitários (JUnit 5 + Mockito) e integração (`@SpringBootTest`) serão criados |
+| III. Qualidade e Testes | ✅ Pass | Testes unitários (JUnit 5 + Mockito) e de integração (`@SpringBootTest`) serão criados |
 | IV. Banco de Dados e Migrations | ✅ Pass | Schema via Flyway; migration reversível |
 | V. Mensageria e Cache | ✅ Pass | Não aplicável a esta feature (sem eventos assíncronos) |
 | VI. Observabilidade e Monitoramento | ✅ Pass | Logs estruturados e endpoints Actuator herdados do projeto |
@@ -45,21 +45,21 @@ Implementar o cadastro e gestão de serviços oferecidos pela barbearia, permiti
 
 **Resultado**: Todos os princípios da Constitution são respeitados. Nenhuma violação justificada.
 
-## Project Structure
+## Estrutura do Projeto
 
-### Documentation (this feature)
+### Documentação (desta feature)
 
 ```text
 specs/001-cadastro-servicos/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+├── plan.md              # Este arquivo (saída do comando /speckit.plan)
+├── research.md          # Saída da Fase 0 (comando /speckit.plan)
+├── data-model.md        # Saída da Fase 1 (comando /speckit.plan)
+├── quickstart.md        # Saída da Fase 1 (comando /speckit.plan)
+├── contracts/           # Saída da Fase 1 (comando /speckit.plan)
+└── tasks.md             # Saída da Fase 2 (comando /speckit.tasks - NÃO criado pelo /speckit.plan)
 ```
 
-### Source Code (repository root)
+### Código Fonte (raiz do repositório)
 
 ```text
 src/main/java/com/barbeariadose/api/
@@ -95,10 +95,10 @@ src/main/resources/
 └── application.yml
 ```
 
-**Structure Decision**: Estrutura monolítica single-project, com separação em camadas conforme Constitution. A camada `domain` contém entidade e repositório (interface), `application` contém serviço de aplicação e DTOs, e `infrastructure` contém controller REST e tratamento global de exceções. Testes unitários cobrem domínio e aplicação; testes de integração cobrem controller.
+**Decisão de Estrutura**: Estrutura monolítica single-project, com separação em camadas conforme a Constitution. A camada `domain` contém a entidade e o repositório (interface), a camada `application` contém o serviço de aplicação e os DTOs, e a camada `infrastructure` contém o controller REST e o tratamento global de exceções. Testes unitários cobrem domínio e aplicação; testes de integração cobrem o controller.
 
-## Complexity Tracking
+## Acompanhamento de Complexidade
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
+> **Preencher SOMENTE se a Verificação da Constitution apresentar violações que devem ser justificadas**
 
 Nenhuma violação identificada.

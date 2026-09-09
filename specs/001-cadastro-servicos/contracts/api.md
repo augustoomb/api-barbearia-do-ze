@@ -1,8 +1,8 @@
-# API Contracts: Cadastro de Serviços
+# Contratos da API: Cadastro de Serviços
 
 Base path: `/api/v1/services`
 
-Response envelope (default):
+Envelope padrão de resposta:
 
 ```json
 {
@@ -16,9 +16,9 @@ Response envelope (default):
 
 ## POST /api/v1/services
 
-Create a new service.
+Cria um novo serviço.
 
-### Request
+### Requisição
 
 ```json
 {
@@ -29,7 +29,7 @@ Create a new service.
 }
 ```
 
-### Response 201 Created
+### Resposta 201 Created
 
 ```json
 {
@@ -48,7 +48,7 @@ Create a new service.
 }
 ```
 
-### Response 400 Bad Request
+### Resposta 400 Bad Request
 
 ```json
 {
@@ -61,7 +61,7 @@ Create a new service.
 }
 ```
 
-### Response 409 Conflict
+### Resposta 409 Conflict
 
 ```json
 {
@@ -77,9 +77,9 @@ Create a new service.
 
 ## GET /api/v1/services
 
-List all registered services (active and inactive).
+Lista todos os serviços cadastrados (ativos e inativos).
 
-### Response 200 OK
+### Resposta 200 OK
 
 ```json
 {
@@ -104,13 +104,13 @@ List all registered services (active and inactive).
 
 ## GET /api/v1/services/{id}
 
-Get a specific service by id.
+Consulta um serviço específico pelo id.
 
-### Response 200 OK
+### Resposta 200 OK
 
-Same shape as POST response.
+Mesmo formato da resposta do POST.
 
-### Response 404 Not Found
+### Resposta 404 Not Found
 
 ```json
 {
@@ -126,9 +126,9 @@ Same shape as POST response.
 
 ## PATCH /api/v1/services/{id}
 
-Partially update a service. Only provided fields are changed. `active` cannot be changed through this endpoint.
+Atualiza parcialmente um serviço. Apenas os campos enviados são alterados. O campo `active` não pode ser alterado por este endpoint.
 
-### Request
+### Requisição
 
 ```json
 {
@@ -136,62 +136,62 @@ Partially update a service. Only provided fields are changed. `active` cannot be
 }
 ```
 
-### Response 200 OK
+### Resposta 200 OK
 
-Updated service object.
+Objeto do serviço atualizado.
 
-### Response 400 Bad Request
+### Resposta 400 Bad Request
 
-Returned when a provided field is invalid or no fields are provided.
+Retornada quando um campo fornecido é inválido ou quando nenhum campo é fornecido.
 
-### Response 404 Not Found
+### Resposta 404 Not Found
 
-Returned when the service does not exist.
+Retornada quando o serviço não existe.
 
-### Response 409 Conflict
+### Resposta 409 Conflict
 
-Returned when the new name conflicts with another active service.
+Retornada quando o novo nome conflita com outro serviço ativo.
 
 ---
 
 ## POST /api/v1/services/{id}/activate
 
-Activate a service.
+Ativa um serviço.
 
-### Response 200 OK
+### Resposta 200 OK
 
-Activated service object.
+Objeto do serviço ativado.
 
-### Response 404 Not Found
+### Resposta 404 Not Found
 
-Returned when the service does not exist.
+Retornada quando o serviço não existe.
 
-### Response 409 Conflict
+### Resposta 409 Conflict
 
-Returned when another active service already has the same normalized name.
+Retornada quando outro serviço ativo já possui o mesmo nome normalizado.
 
 ---
 
 ## POST /api/v1/services/{id}/deactivate
 
-Deactivate a service.
+Desativa um serviço.
 
-### Response 200 OK
+### Resposta 200 OK
 
-Deactivated service object.
+Objeto do serviço desativado.
 
-### Response 404 Not Found
+### Resposta 404 Not Found
 
-Returned when the service does not exist.
+Retornada quando o serviço não existe.
 
 ---
 
-## Field Rules Summary
+## Resumo das Regras por Campo
 
-| Field | Create | Update | Activate/Deactivate |
-|-------|--------|--------|---------------------|
-| name | required, unique among active (normalized) | optional, unique among active (normalized) | not allowed |
-| description | optional | optional | not allowed |
-| durationMinutes | required, > 0 | optional, > 0 | not allowed |
-| price | required, >= 0 | optional, >= 0 | not allowed |
-| active | read-only (default true) | not allowed | changed by operation |
+| Campo | Criação | Atualização | Ativação/Desativação |
+|-------|---------|-------------|----------------------|
+| name | obrigatório, único entre ativos (normalizado) | opcional, único entre ativos (normalizado) | não permitido |
+| description | opcional | opcional | não permitido |
+| durationMinutes | obrigatório, > 0 | opcional, > 0 | não permitido |
+| price | obrigatório, >= 0 | opcional, >= 0 | não permitido |
+| active | somente leitura (default true) | não permitido | alterado pela operação |

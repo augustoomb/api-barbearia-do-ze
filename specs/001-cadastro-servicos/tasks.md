@@ -44,11 +44,11 @@ description: "Task list for implementing the Cadastro de Serviços feature"
 
 - [ ] T003 [P] Create Flyway migration `src/main/resources/db/migration/V1__create_services_table.sql` with `services` table matching data-model.md, including rollback instruction `DROP TABLE IF EXISTS services;`
 - [ ] T005 [P] Create `src/main/java/com/barbeariadose/api/domain/service/ServiceEntity.java` JPA entity with all fields and lifecycle timestamps, using `boolean active` field
-- [ ] T006 [P] Create `src/main/java/com/barbeariadose/api/domain/service/ServiceRepository.java` Spring Data JPA interface with `findAllByActiveTrue()` and `findAllActive()` query methods to support future scheduling features
+- [ ] T006 Create `src/main/java/com/barbeariadose/api/domain/service/ServiceRepository.java` Spring Data JPA interface with `findAllByActiveTrue()` query method to support future scheduling features (depends on T005)
 - [ ] T007 [P] Create `src/main/java/com/barbeariadose/api/domain/service/NameNormalizer.java` utility to normalize service names (lowercase, remove accents, trim)
 - [ ] T008 [P] Create domain exceptions in `src/main/java/com/barbeariadose/api/domain/service/`: `ServiceNotFoundException`, `DuplicateServiceNameException`, and `InvalidServiceException`
 - [ ] T009 [P] Create request/response DTOs in `src/main/java/com/barbeariadose/api/application/service/`: `CreateServiceRequest.java`, `UpdateServiceRequest.java`, and `ServiceResponse.java`
-- [ ] T010 [P] Create `src/main/java/com/barbeariadose/api/application/service/ServiceMapper.java` to convert between Entity, Request, and Response DTOs
+- [ ] T010 Create `src/main/java/com/barbeariadose/api/application/service/ServiceMapper.java` to convert between Entity, Request, and Response DTOs (depends on T005 and T009)
 - [ ] T011 [P] Create `src/main/java/com/barbeariadose/api/infrastructure/web/ApiResponse.java` standardized response envelope
 - [ ] T012 [P] Create `src/main/java/com/barbeariadose/api/infrastructure/web/GlobalExceptionHandler.java` to handle validation, not found, conflict, and generic errors with standardized responses
 
@@ -163,6 +163,7 @@ description: "Task list for implementing the Cadastro de Serviços feature"
 - [ ] T033 [P] Run all unit and integration tests with `./mvnw test` and fix any failures
 - [ ] T034 [P] Execute the validation scenarios from `quickstart.md` against a running local instance
 - [ ] T035 [P] Verify code coverage and add missing tests if needed
+- [ ] T035b [P] Validate that `GET /api/v1/services` returns a list of 100 services in under 2 seconds using an integration or performance test
 - [ ] T036 Verify OpenAPI/SpringDoc annotations are present on `ServiceController.java` endpoints
 - [ ] T037 Review structured logging and ensure `trace-id`/`correlation-id` are propagated in controller and service logs
 - [ ] T038 Run `./mvnw verify` or equivalent quality gate to confirm build passes
@@ -195,7 +196,7 @@ description: "Task list for implementing the Cadastro de Serviços feature"
 
 ### Parallel Opportunities
 
-- All Foundational tasks (T003–T012) can run in parallel (different files).
+- Foundational tasks T003, T005, T007, T008, T009, T011, and T012 can run in parallel; T006 depends on T005 and T010 depends on T005 and T009.
 - Tests for each user story (T013–T014, T017–T018, etc.) can run in parallel with each other.
 - Different user stories can be implemented in parallel by different developers after foundation is complete.
 - Polish tasks T033–T038 can run mostly in parallel.

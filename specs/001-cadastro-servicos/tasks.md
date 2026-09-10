@@ -1,261 +1,261 @@
 ---
 
-description: "Task list for implementing the Cadastro de Serviços feature"
+description: "Lista de tarefas para implementação da feature Cadastro de Serviços"
 ---
 
-# Tasks: Cadastro de Serviços
+# Tarefas: Cadastro de Serviços
 
-**Input**: Design documents from `/specs/001-cadastro-servicos/`
+**Entrada**: Documentos de design em `/specs/001-cadastro-servicos/`
 
-**Prerequisites**: plan.md, spec.md, data-model.md, contracts/api.md, quickstart.md
+**Pré-requisitos**: plan.md, spec.md, data-model.md, contracts/api.md, quickstart.md
 
-**Tests**: Tasks include unit and integration tests as required by the project Constitution.
+**Testes**: As tarefas incluem testes unitários e de integração conforme exigido pela Constitution do projeto.
 
-**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+**Organização**: As tarefas são agrupadas por história de usuário para permitir implementação e testes independentes de cada uma.
 
-## Format: `[ID] [P?] [Story] Description`
+## Formato: `[ID] [P?] [História] Descrição`
 
-- **[P]**: Can run in parallel (different files, no dependencies)
-- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
+- **[P]**: Pode executar em paralelo (arquivos diferentes, sem dependências)
+- **[História]**: Qual história de usuário a tarefa pertence (ex.: US1, US2, US3)
 
-## Path Conventions
+## Convenções de Caminho
 
-- Base package: `com.barbeariadose.api`
-- Source root: `src/main/java/com/barbeariadose/api/`
-- Test root: `src/test/java/com/barbeariadose/api/`
+- Pacote base: `com.barbeariadose.api`
+- Raiz do código fonte: `src/main/java/com/barbeariadose/api/`
+- Raiz dos testes: `src/test/java/com/barbeariadose/api/`
 - Migrations: `src/main/resources/db/migration/`
 
 ---
 
-## Phase 1: Setup (Shared Infrastructure)
+## Fase 1: Setup (Infraestrutura Compartilhada)
 
-**Purpose**: Verify and prepare the project structure and dependencies.
+**Propósito**: Verificar e preparar a estrutura do projeto e as dependências.
 
-- [ ] T001 Verify project structure exists at `src/main/java/com/barbeariadose/api/` and create missing directories: `domain/service/`, `application/service/`, `infrastructure/web/`, and corresponding test directories
-- [ ] T002 Verify `pom.xml` includes required dependencies: Spring Web, Spring Data JPA, Spring Validation, Flyway, PostgreSQL driver, H2, Lombok, and MapStruct
-
----
-
-## Phase 2: Foundational (Blocking Prerequisites)
-
-**Purpose**: Core domain, persistence, DTOs, and cross-cutting infrastructure that MUST be complete before user stories.
-
-**⚠️ CRITICAL**: No user story work can begin until this phase is complete.
-
-- [ ] T003 [P] Create Flyway migration `src/main/resources/db/migration/V1__create_services_table.sql` with `services` table matching data-model.md, including rollback instruction `DROP TABLE IF EXISTS services;`
-- [ ] T005 [P] Create `src/main/java/com/barbeariadose/api/domain/service/ServiceEntity.java` JPA entity with all fields and lifecycle timestamps, using `boolean active` field
-- [ ] T006 Create `src/main/java/com/barbeariadose/api/domain/service/ServiceRepository.java` Spring Data JPA interface with `findAllByActiveTrue()` query method to support future scheduling features (depends on T005)
-- [ ] T007 [P] Create `src/main/java/com/barbeariadose/api/domain/service/NameNormalizer.java` utility to normalize service names (lowercase, remove accents, trim)
-- [ ] T008 [P] Create domain exceptions in `src/main/java/com/barbeariadose/api/domain/service/`: `ServiceNotFoundException`, `DuplicateServiceNameException`, and `InvalidServiceException`
-- [ ] T009 [P] Create request/response DTOs in `src/main/java/com/barbeariadose/api/application/service/`: `CreateServiceRequest.java`, `UpdateServiceRequest.java`, and `ServiceResponse.java`
-- [ ] T010 Create `src/main/java/com/barbeariadose/api/application/service/ServiceMapper.java` to convert between Entity, Request, and Response DTOs (depends on T005 and T009)
-- [ ] T011 [P] Create `src/main/java/com/barbeariadose/api/infrastructure/web/ApiResponse.java` standardized response envelope
-- [ ] T012 [P] Create `src/main/java/com/barbeariadose/api/infrastructure/web/GlobalExceptionHandler.java` to handle validation, not found, conflict, and generic errors with standardized responses
-
-**Checkpoint**: Foundation ready — user story implementation can now begin in parallel.
+- [ ] T001 Verificar se a estrutura do projeto existe em `src/main/java/com/barbeariadose/api/` e criar diretórios ausentes: `domain/service/`, `application/service/`, `infrastructure/web/` e os respectivos diretórios de teste
+- [ ] T002 Verificar se o `pom.xml` inclui as dependências necessárias: Spring Web, Spring Data JPA, Spring Validation, Flyway, driver PostgreSQL, H2, Lombok e MapStruct
 
 ---
 
-## Phase 3: User Story 1 - Cadastrar novo serviço (Priority: P1) 🎯 MVP
+## Fase 2: Fundação (Pré-requisitos Bloqueantes)
 
-**Goal**: Allow managers to create new barbershop services with validation and active-by-default status.
+**Propósito**: Domínio central, persistência, DTOs e infraestrutura transversal que DEVEM estar completos antes das histórias de usuário.
 
-**Independent Test**: Send a POST request to `/api/v1/services` and verify the service is persisted with `active: true` and can be retrieved.
+**⚠️ CRÍTICO**: Nenhum trabalho de história de usuário pode começar até esta fase estar completa.
 
-### Tests for User Story 1
+- [ ] T003 [P] Criar migration Flyway `src/main/resources/db/migration/V1__create_services_table.sql` com a tabela `services` conforme data-model.md, incluindo instrução de rollback `DROP TABLE IF EXISTS services;`
+- [ ] T005 [P] Criar `src/main/java/com/barbeariadose/api/domain/service/ServiceEntity.java` entidade JPA com todos os campos e timestamps de ciclo de vida, usando campo `boolean active`
+- [ ] T006 Criar `src/main/java/com/barbeariadose/api/domain/service/ServiceRepository.java` interface Spring Data JPA com o método de query `findAllByActiveTrue()` para suportar futuras features de agendamento (depende de T005)
+- [ ] T007 [P] Criar `src/main/java/com/barbeariadose/api/domain/service/NameNormalizer.java` utilitário para normalizar nomes de serviço (minúsculas, remover acentos, trim)
+- [ ] T008 [P] Criar exceções de domínio em `src/main/java/com/barbeariadose/api/domain/service/`: `ServiceNotFoundException`, `DuplicateServiceNameException` e `InvalidServiceException`
+- [ ] T009 [P] Criar DTOs de requisição/resposta em `src/main/java/com/barbeariadose/api/application/service/`: `CreateServiceRequest.java`, `UpdateServiceRequest.java` e `ServiceResponse.java`
+- [ ] T010 Criar `src/main/java/com/barbeariadose/api/application/service/ServiceMapper.java` para converter entre Entity, Request e Response DTOs (depende de T005 e T009)
+- [ ] T011 [P] Criar `src/main/java/com/barbeariadose/api/infrastructure/web/ApiResponse.java` envelope padronizado de resposta
+- [ ] T012 [P] Criar `src/main/java/com/barbeariadose/api/infrastructure/web/GlobalExceptionHandler.java` para tratar validação, não encontrado, conflito e erros genéricos com respostas padronizadas
 
-- [ ] T013 [P] [US1] Write unit tests for `ServiceService.create()` in `src/test/java/com/barbeariadose/api/application/service/ServiceServiceTest.java` covering valid creation, blank name, duplicate normalized name, zero/negative duration, and negative price
-- [ ] T014 [P] [US1] Write integration tests for `POST /api/v1/services` in `src/test/java/com/barbeariadose/api/infrastructure/web/ServiceControllerIntegrationTest.java` covering 201, 400, and 409 responses
-
-### Implementation for User Story 1
-
-- [ ] T015 [US1] Implement `ServiceService.create()` in `src/main/java/com/barbeariadose/api/application/service/ServiceService.java` with all business validations
-- [ ] T016 [US1] Implement `POST /api/v1/services` endpoint in `src/main/java/com/barbeariadose/api/infrastructure/web/ServiceController.java`
-
-**Checkpoint**: User Story 1 should be fully functional and testable independently.
-
----
-
-## Phase 4: User Story 2 - Consultar serviços cadastrados (Priority: P1)
-
-**Goal**: Allow managers to list all registered services, active or inactive.
-
-**Independent Test**: After creating services via POST, send GET `/api/v1/services` and receive all persisted services.
-
-### Tests for User Story 2
-
-- [ ] T017 [P] [US2] Write unit tests for `ServiceService.findAll()` in `ServiceServiceTest.java`
-- [ ] T018 [P] [US2] Write integration tests for `GET /api/v1/services` in `ServiceControllerIntegrationTest.java` covering populated and empty lists
-
-### Implementation for User Story 2
-
-- [ ] T019 [US2] Implement `ServiceService.findAll()` in `ServiceService.java`
-- [ ] T020 [US2] Implement `GET /api/v1/services` endpoint in `ServiceController.java`
-
-**Checkpoint**: User Stories 1 and 2 should both work independently.
+**Checkpoint**: Fundação pronta — a implementação das histórias de usuário pode começar em paralelo.
 
 ---
 
-## Phase 5: User Story 3 - Consultar serviço específico (Priority: P2)
+## Fase 3: História de Usuário 1 - Cadastrar novo serviço (Prioridade: P1) 🎯 MVP
 
-**Goal**: Allow managers to retrieve a single service by its identifier.
+**Objetivo**: Permitir que gestores criem novos serviços da barbearia com validação e status ativo por padrão.
 
-**Independent Test**: Send GET `/api/v1/services/{id}` and receive 200 for existing service or 404 for missing service.
+**Teste Independente**: Enviar uma requisição POST para `/api/v1/services` e verificar que o serviço foi persistido com `active: true` e pode ser consultado.
 
-### Tests for User Story 3
+### Testes para História de Usuário 1
 
-- [ ] T021 [P] [US3] Write unit tests for `ServiceService.findById()` in `ServiceServiceTest.java`
-- [ ] T022 [P] [US3] Write integration tests for `GET /api/v1/services/{id}` in `ServiceControllerIntegrationTest.java`
+- [ ] T013 [P] [US1] Escrever testes unitários para `ServiceService.create()` em `src/test/java/com/barbeariadose/api/application/service/ServiceServiceTest.java` cobrindo criação válida, nome em branco, nome duplicado normalizado, duração zero/negativa e preço negativo
+- [ ] T014 [P] [US1] Escrever testes de integração para `POST /api/v1/services` em `src/test/java/com/barbeariadose/api/infrastructure/web/ServiceControllerIntegrationTest.java` cobrindo respostas 201, 400 e 409
 
-### Implementation for User Story 3
+### Implementação para História de Usuário 1
 
-- [ ] T023 [US3] Implement `ServiceService.findById()` in `ServiceService.java`
-- [ ] T024 [US3] Implement `GET /api/v1/services/{id}` endpoint in `ServiceController.java`
+- [ ] T015 [US1] Implementar `ServiceService.create()` em `src/main/java/com/barbeariadose/api/application/service/ServiceService.java` com todas as validações de negócio
+- [ ] T016 [US1] Implementar endpoint `POST /api/v1/services` em `src/main/java/com/barbeariadose/api/infrastructure/web/ServiceController.java`
 
-**Checkpoint**: User Stories 1, 2, and 3 should all work independently.
-
----
-
-## Phase 6: User Story 4 - Atualizar serviço (Priority: P2)
-
-**Goal**: Allow managers to partially update service data without changing status.
-
-**Independent Test**: Send PATCH `/api/v1/services/{id}` with only `price` and verify the service is updated while other fields remain unchanged.
-
-### Tests for User Story 4
-
-- [ ] T025 [P] [US4] Write unit tests for `ServiceService.update()` in `ServiceServiceTest.java` covering partial updates, blank request, duplicate name, invalid duration, and invalid price
-- [ ] T026 [P] [US4] Write integration tests for `PATCH /api/v1/services/{id}` in `ServiceControllerIntegrationTest.java`
-
-### Implementation for User Story 4
-
-- [ ] T027 [US4] Implement `ServiceService.update()` in `ServiceService.java` with partial update logic and validation of provided fields only
-- [ ] T028 [US4] Implement `PATCH /api/v1/services/{id}` endpoint in `ServiceController.java`
-
-**Checkpoint**: User Stories 1–4 should all work independently.
+**Checkpoint**: A História de Usuário 1 deve estar totalmente funcional e testável independentemente.
 
 ---
 
-## Phase 7: User Story 5 - Ativar ou desativar serviço (Priority: P2)
+## Fase 4: História de Usuário 2 - Consultar serviços cadastrados (Prioridade: P1)
 
-**Goal**: Allow managers to activate or deactivate a service through dedicated endpoints, with idempotency and name-conflict checks on activation.
+**Objetivo**: Permitir que gestores listem todos os serviços cadastrados, ativos ou inativos.
 
-**Independent Test**: Send POST `/api/v1/services/{id}/deactivate` and verify `active: false`; send POST `/api/v1/services/{id}/activate` twice and verify both return success.
+**Teste Independente**: Após criar serviços via POST, enviar GET `/api/v1/services` e receber todos os serviços persistidos.
 
-### Tests for User Story 5
+### Testes para História de Usuário 2
 
-- [ ] T029 [P] [US5] Write unit tests for `ServiceService.activate()` and `ServiceService.deactivate()` in `ServiceServiceTest.java` covering status transitions, idempotency, and activation name conflict
-- [ ] T030 [P] [US5] Write integration tests for activation/deactivation endpoints in `ServiceControllerIntegrationTest.java`
+- [ ] T017 [P] [US2] Escrever testes unitários para `ServiceService.findAll()` em `ServiceServiceTest.java`
+- [ ] T018 [P] [US2] Escrever testes de integração para `GET /api/v1/services` em `ServiceControllerIntegrationTest.java` cobrindo lista populada e lista vazia
 
-### Implementation for User Story 5
+### Implementação para História de Usuário 2
 
-- [ ] T031 [US5] Implement `ServiceService.activate()` and `ServiceService.deactivate()` in `ServiceService.java` with idempotency and conflict validation
-- [ ] T032 [US5] Implement `POST /api/v1/services/{id}/activate` and `POST /api/v1/services/{id}/deactivate` endpoints in `ServiceController.java`
+- [ ] T019 [US2] Implementar `ServiceService.findAll()` em `ServiceService.java`
+- [ ] T020 [US2] Implementar endpoint `GET /api/v1/services` em `ServiceController.java`
 
-**Checkpoint**: All user stories should now be independently functional.
-
----
-
-## Phase 8: Polish & Cross-Cutting Concerns
-
-**Purpose**: Quality gates, documentation, and final validation.
-
-- [ ] T033 [P] Run all unit and integration tests with `./mvnw test` and fix any failures
-- [ ] T034 [P] Execute the validation scenarios from `quickstart.md` against a running local instance
-- [ ] T035 [P] Verify code coverage and add missing tests if needed
-- [ ] T035b [P] Validate that `GET /api/v1/services` returns a list of 100 services in under 2 seconds using an integration or performance test
-- [ ] T036 Verify OpenAPI/SpringDoc annotations are present on `ServiceController.java` endpoints
-- [ ] T037 Review structured logging and ensure `trace-id`/`correlation-id` are propagated in controller and service logs
-- [ ] T038 Run `./mvnw verify` or equivalent quality gate to confirm build passes
+**Checkpoint**: As Histórias de Usuário 1 e 2 devem funcionar independentemente.
 
 ---
 
-## Dependencies & Execution Order
+## Fase 5: História de Usuário 3 - Consultar serviço específico (Prioridade: P2)
 
-### Phase Dependencies
+**Objetivo**: Permitir que gestores consultem os detalhes de um serviço pelo identificador.
 
-- **Setup (Phase 1)**: No dependencies.
-- **Foundational (Phase 2)**: Depends on Setup completion — blocks all user stories.
-- **User Stories (Phase 3–7)**: All depend on Foundational phase completion.
-  - Execute in priority order (P1 → P2) or in parallel if team capacity allows.
-- **Polish (Phase 8)**: Depends on all desired user stories being complete.
+**Teste Independente**: Enviar GET `/api/v1/services/{id}` e receber 200 para serviço existente ou 404 para serviço inexistente.
 
-### User Story Dependencies
+### Testes para História de Usuário 3
 
-- **User Story 1 (P1)**: No dependencies on other stories; delivers MVP.
-- **User Story 2 (P1)**: Depends only on foundation; reuses ServiceEntity and repository.
-- **User Story 3 (P2)**: Depends only on foundation; reuses existing components.
-- **User Story 4 (P2)**: Depends only on foundation; reuses validation and DTOs.
-- **User Story 5 (P2)**: Depends only on foundation; reuses repository and normalized name logic.
+- [ ] T021 [P] [US3] Escrever testes unitários para `ServiceService.findById()` em `ServiceServiceTest.java`
+- [ ] T022 [P] [US3] Escrever testes de integração para `GET /api/v1/services/{id}` em `ServiceControllerIntegrationTest.java`
 
-### Within Each User Story
+### Implementação para História de Usuário 3
 
-- Unit and integration tests can be written in parallel once foundation is ready.
-- Service implementation before controller endpoint.
-- Endpoint implementation before integration tests can pass.
+- [ ] T023 [US3] Implementar `ServiceService.findById()` em `ServiceService.java`
+- [ ] T024 [US3] Implementar endpoint `GET /api/v1/services/{id}` em `ServiceController.java`
 
-### Parallel Opportunities
-
-- Foundational tasks T003, T005, T007, T008, T009, T011, and T012 can run in parallel; T006 depends on T005 and T010 depends on T005 and T009.
-- Tests for each user story (T013–T014, T017–T018, etc.) can run in parallel with each other.
-- Different user stories can be implemented in parallel by different developers after foundation is complete.
-- Polish tasks T033–T038 can run mostly in parallel.
+**Checkpoint**: As Histórias de Usuário 1, 2 e 3 devem funcionar independentemente.
 
 ---
 
-## Parallel Example: User Story 1
+## Fase 6: História de Usuário 4 - Atualizar serviço (Prioridade: P2)
+
+**Objetivo**: Permitir que gestores atualizem parcialmente os dados de um serviço sem alterar o status.
+
+**Teste Independente**: Enviar PATCH `/api/v1/services/{id}` apenas com `price` e verificar que o serviço foi atualizado enquanto os demais campos permanecem inalterados.
+
+### Testes para História de Usuário 4
+
+- [ ] T025 [P] [US4] Escrever testes unitários para `ServiceService.update()` em `ServiceServiceTest.java` cobrindo atualizações parciais, requisição em branco, nome duplicado, duração inválida e preço inválido
+- [ ] T026 [P] [US4] Escrever testes de integração para `PATCH /api/v1/services/{id}` em `ServiceControllerIntegrationTest.java`
+
+### Implementação para História de Usuário 4
+
+- [ ] T027 [US4] Implementar `ServiceService.update()` em `ServiceService.java` com lógica de atualização parcial e validação apenas dos campos informados
+- [ ] T028 [US4] Implementar endpoint `PATCH /api/v1/services/{id}` em `ServiceController.java`
+
+**Checkpoint**: As Histórias de Usuário 1–4 devem funcionar independentemente.
+
+---
+
+## Fase 7: História de Usuário 5 - Ativar ou desativar serviço (Prioridade: P2)
+
+**Objetivo**: Permitir que gestores ativem ou desativem um serviço por meio de endpoints dedicados, com idempotência e verificação de conflito de nome na ativação.
+
+**Teste Independente**: Enviar POST `/api/v1/services/{id}/deactivate` e verificar `active: false`; enviar POST `/api/v1/services/{id}/activate` duas vezes e verificar que ambas retornam sucesso.
+
+### Testes para História de Usuário 5
+
+- [ ] T029 [P] [US5] Escrever testes unitários para `ServiceService.activate()` e `ServiceService.deactivate()` em `ServiceServiceTest.java` cobrindo transições de status, idempotência e conflito de nome na ativação
+- [ ] T030 [P] [US5] Escrever testes de integração para os endpoints de ativação/desativação em `ServiceControllerIntegrationTest.java`
+
+### Implementação para História de Usuário 5
+
+- [ ] T031 [US5] Implementar `ServiceService.activate()` e `ServiceService.deactivate()` em `ServiceService.java` com idempotência e validação de conflito
+- [ ] T032 [US5] Implementar endpoints `POST /api/v1/services/{id}/activate` e `POST /api/v1/services/{id}/deactivate` em `ServiceController.java`
+
+**Checkpoint**: Todas as histórias de usuário devem estar funcionalmente independentes.
+
+---
+
+## Fase 8: Polimento e Cuidados Transversais
+
+**Propósito**: Quality gates, documentação e validação final.
+
+- [ ] T033 [P] Executar todos os testes unitários e de integração com `./mvnw test` e corrigir falhas
+- [ ] T034 [P] Executar os cenários de validação do `quickstart.md` contra uma instância local em execução
+- [ ] T035 [P] Verificar cobertura de código e adicionar testes ausentes se necessário
+- [ ] T035b [P] Validar que `GET /api/v1/services` retorna uma lista de 100 serviços em menos de 2 segundos usando um teste de integração ou de performance
+- [ ] T036 Verificar se as anotações OpenAPI/SpringDoc estão presentes nos endpoints de `ServiceController.java`
+- [ ] T037 Revisar logs estruturados e garantir que `trace-id`/`correlation-id` sejam propagados nos logs do controller e do service
+- [ ] T038 Executar `./mvnw verify` ou quality gate equivalente para confirmar que o build passa
+
+---
+
+## Dependências e Ordem de Execução
+
+### Dependências entre Fases
+
+- **Fase 1 (Setup)**: Sem dependências.
+- **Fase 2 (Fundação)**: Depende do Setup — bloqueia todas as histórias de usuário.
+- **Fases 3–7 (Histórias de Usuário)**: Todas dependem da Fase 2.
+  - Executar em ordem de prioridade (P1 → P2) ou em paralelo se houver capacidade.
+- **Fase 8 (Polimento)**: Depende de todas as histórias de usuário desejadas estarem completas.
+
+### Dependências entre Histórias de Usuário
+
+- **História 1 (P1)**: Sem dependências de outras histórias; entrega o MVP.
+- **História 2 (P1)**: Depende apenas da fundação; reutiliza ServiceEntity e repository.
+- **História 3 (P2)**: Depende apenas da fundação; reutiliza componentes existentes.
+- **História 4 (P2)**: Depende apenas da fundação; reutiliza validações e DTOs.
+- **História 5 (P2)**: Depende apenas da fundação; reutiliza repository e lógica de nome normalizado.
+
+### Dentro de Cada História de Usuário
+
+- Testes unitários e de integração podem ser escritos em paralelo após a fundação pronta.
+- Implementação do service antes do endpoint do controller.
+- Implementação do endpoint antes dos testes de integração passarem.
+
+### Oportunidades de Paralelismo
+
+- As tarefas fundamentais T003, T005, T007, T008, T009, T011 e T012 podem rodar em paralelo; T006 depende de T005 e T010 depende de T005 e T009.
+- Os testes de cada história de usuário (T013–T014, T017–T018, etc.) podem rodar em paralelo entre si.
+- Histórias de usuário diferentes podem ser implementadas em paralelo por desenvolvedores diferentes após a fundação completa.
+- As tarefas de polimento T033–T038 podem rodar majoritariamente em paralelo.
+
+---
+
+## Exemplo Paralelo: História de Usuário 1
 
 ```bash
-# Unit and integration tests can be drafted in parallel:
-Task: "Write unit tests for ServiceService.create() in ServiceServiceTest.java"
-Task: "Write integration tests for POST /api/v1/services in ServiceControllerIntegrationTest.java"
+# Testes unitário e de integração podem ser escritos em paralelo:
+Tarefa: "Escrever testes unitários para ServiceService.create() em ServiceServiceTest.java"
+Tarefa: "Escrever testes de integração para POST /api/v1/services em ServiceControllerIntegrationTest.java"
 
-# Then implement service and controller (sequential dependency):
-Task: "Implement ServiceService.create() in ServiceService.java"
-Task: "Implement POST /api/v1/services endpoint in ServiceController.java"
+# Depois implementar service e controller (dependência sequencial):
+Tarefa: "Implementar ServiceService.create() em ServiceService.java"
+Tarefa: "Implementar endpoint POST /api/v1/services em ServiceController.java"
 ```
 
 ---
 
-## Implementation Strategy
+## Estratégia de Implementação
 
-### MVP First (User Story 1 Only)
+### MVP Primeiro (Apenas História 1)
 
-1. Complete Phase 1: Setup.
-2. Complete Phase 2: Foundational (critical — blocks all stories).
-3. Complete Phase 3: User Story 1 (create service).
-4. **STOP and VALIDATE**: Test User Story 1 independently using quickstart scenario 1.
-5. Deploy/demo if ready.
+1. Completar Fase 1: Setup.
+2. Completar Fase 2: Fundação (crítica — bloqueia todas as histórias).
+3. Completar Fase 3: História 1 (criar serviço).
+4. **PARAR E VALIDAR**: Testar a História 1 independentemente usando o cenário 1 do quickstart.
+5. Fazer deploy/demo se estiver pronto.
 
-### Incremental Delivery
+### Entrega Incremental
 
-1. Complete Setup + Foundational → Foundation ready.
-2. Add User Story 1 → Test independently → Deploy/Demo (MVP).
-3. Add User Story 2 → Test independently → Deploy/Demo.
-4. Add User Stories 3, 4, 5 → Test independently → Deploy/Demo.
-5. Each story adds value without breaking previous stories.
+1. Completar Setup + Fundação → Fundação pronta.
+2. Adicionar História 1 → Testar independentemente → Deploy/Demo (MVP).
+3. Adicionar História 2 → Testar independentemente → Deploy/Demo.
+4. Adicionar Histórias 3, 4, 5 → Testar independentemente → Deploy/Demo.
+5. Cada história agrega valor sem quebrar as anteriores.
 
-### Parallel Team Strategy
+### Estratégia de Equipe Paralela
 
-With multiple developers:
+Com múltiplos desenvolvedores:
 
-1. Team completes Setup + Foundational together.
-2. Once foundation is done:
-   - Developer A: User Story 1
-   - Developer B: User Story 2
-   - Developer C: User Story 3
-   - Developer D: User Story 4
-   - Developer E: User Story 5
-3. Stories complete and integrate independently.
+1. A equipe completa Setup + Fundação junta.
+2. Após a fundação pronta:
+   - Desenvolvedor A: História 1
+   - Desenvolvedor B: História 2
+   - Desenvolvedor C: História 3
+   - Desenvolvedor D: História 4
+   - Desenvolvedor E: História 5
+3. As histórias são completadas e integradas independentemente.
 
 ---
 
-## Notes
+## Observações
 
-- [P] tasks = different files, no dependencies.
-- [Story] label maps task to specific user story for traceability.
-- Each user story should be independently completable and testable.
-- Verify tests fail before implementing (red-green-refactor recommended but not mandatory).
-- Commit after each task or logical group.
-- Stop at any checkpoint to validate a story independently.
-- Avoid vague tasks, same-file conflicts, and cross-story dependencies that break independence.
+- Tarefas `[P]` = arquivos diferentes, sem dependências.
+- Rótulo `[História]` mapeia a tarefa para uma história específica para rastreabilidade.
+- Cada história de usuário deve ser completável e testável independentemente.
+- Verificar que os testes falham antes de implementar (red-green-refactor recomendado, mas não obrigatório).
+- Commit após cada tarefa ou grupo lógico.
+- Parar em qualquer checkpoint para validar uma história independentemente.
+- Evitar tarefas vagas, conflitos no mesmo arquivo e dependências entre histórias que quebrem a independência.

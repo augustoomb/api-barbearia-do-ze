@@ -1,5 +1,8 @@
 package com.augustoomb.api_barbearia_do_ze.infrastructure.web;
 
+import com.augustoomb.api_barbearia_do_ze.domain.professional.DuplicateProfessionalEmailException;
+import com.augustoomb.api_barbearia_do_ze.domain.professional.InvalidProfessionalException;
+import com.augustoomb.api_barbearia_do_ze.domain.professional.ProfessionalNotFoundException;
 import com.augustoomb.api_barbearia_do_ze.domain.service.DuplicateServiceNameException;
 import com.augustoomb.api_barbearia_do_ze.domain.service.InvalidServiceException;
 import com.augustoomb.api_barbearia_do_ze.domain.service.ServiceNotFoundException;
@@ -36,6 +39,27 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidServiceException.class)
     public ResponseEntity<ApiResponse<Void>> handleInvalid(InvalidServiceException ex, HttpServletRequest request) {
         log.warn("Requisição inválida: {} - {}", request.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(ProfessionalNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleProfessionalNotFound(ProfessionalNotFoundException ex, HttpServletRequest request) {
+        log.warn("Profissional não encontrado: {}", request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(DuplicateProfessionalEmailException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateProfessionalEmail(DuplicateProfessionalEmailException ex, HttpServletRequest request) {
+        log.warn("Conflito de e-mail de profissional: {}", request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidProfessionalException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidProfessional(InvalidProfessionalException ex, HttpServletRequest request) {
+        log.warn("Requisição inválida para profissional: {} - {}", request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(ex.getMessage()));
     }

@@ -35,3 +35,23 @@ Executar job diário para enviar lembretes dos agendamentos do dia seguinte.
 
 ### Feature 010 — Observabilidade
 Adicionar métricas, logs, health checks e dashboards.
+
+-----
+
+001 Serviços
+↓
+002 Profissionais
+↓
+003 Disponibilidade
+↓
+004 Horários disponíveis
+↓
+005 Agendamento
+↓
+006 Cancelamento
+↓
+007 Eventos/RabbitMQ
+↓
+008 E-mails
+↓
+009 Jobs de lembrete

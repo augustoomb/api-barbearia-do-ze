@@ -4,13 +4,11 @@ import com.augustoomb.api_barbearia_do_ze.application.professional.CreateProfess
 import com.augustoomb.api_barbearia_do_ze.application.professional.UpdateProfessionalRequest;
 import com.augustoomb.api_barbearia_do_ze.domain.professional.ProfessionalEntity;
 import com.augustoomb.api_barbearia_do_ze.domain.professional.ProfessionalRepository;
+import com.augustoomb.api_barbearia_do_ze.AbstractIntegrationTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +17,8 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
 @Transactional
-class ProfessionalControllerIntegrationTest {
+class ProfessionalControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

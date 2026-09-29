@@ -34,3 +34,6 @@ build/
 
 # Spec Kit Cache
 .specify/extensions/.cache/
+
+# Environment variables
+.env

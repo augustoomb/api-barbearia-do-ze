@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: barbearia-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-barbearia}
+      POSTGRES_USER: ${DB_USER:-barbearia}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-barbearia}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-barbearia} -d ${DB_NAME:-barbearia}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - barbearia-network
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: barbearia-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - barbearia-network
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: barbearia-mailpit
+    ports:
+      - "${MAIL_PORT:-1025}:1025"
+      - "8025:8025"
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:8025" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - barbearia-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: barbearia-app
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SERVER_PORT: ${SERVER_PORT:-8080}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-barbearia}
+      DB_USER: ${DB_USER:-barbearia}
+      DB_PASSWORD: ${DB_PASSWORD:-barbearia}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+    ports:
+      - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - barbearia-network
+
+volumes:
+  postgres_data:
+
+networks:
+  barbearia-network:
+    driver: bridge

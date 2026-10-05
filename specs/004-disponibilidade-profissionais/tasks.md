@@ -20,10 +20,10 @@
 
 **Purpose**: Estrutura base da feature no projeto existente.
 
-- [ ] T001 [P] Criar pacote `com.augustoomb.api_barbearia_do_ze.domain.availability` em `src/main/java/`
-- [ ] T002 [P] Criar pacote `com.augustoomb.api_barbearia_do_ze.application.availability` em `src/main/java/`
-- [ ] T003 [P] Criar pacote de testes `com.augustoomb.api_barbearia_do_ze.domain.availability` em `src/test/java/`
-- [ ] T004 [P] Criar pacote de testes `com.augustoomb.api_barbearia_do_ze.application.availability` em `src/test/java/`
+- [x] T001 [P] Criar pacote `com.augustoomb.api_barbearia_do_ze.domain.availability` em `src/main/java/`
+- [x] T002 [P] Criar pacote `com.augustoomb.api_barbearia_do_ze.application.availability` em `src/main/java/`
+- [x] T003 [P] Criar pacote de testes `com.augustoomb.api_barbearia_do_ze.domain.availability` em `src/test/java/`
+- [x] T004 [P] Criar pacote de testes `com.augustoomb.api_barbearia_do_ze.application.availability` em `src/test/java/`
 
 ---
 
@@ -33,16 +33,16 @@
 
 **⚠️ CRITICAL**: Nenhuma user story pode começar até esta fase estar completa.
 
-- [ ] T005 Criar migration `V3__create_availability_table.sql` em `src/main/resources/db/migration/` com: (a) criação da tabela `availability` incluindo FK para `professionals`, constraints de dia da semana (`1`-`7`) e de horário (`end_time > start_time`), índice `idx_availability_professional_day`; (b) instrução de rollback `DROP TABLE availability;`.
-- [ ] T006 [P] Criar `AvailabilityEntity.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/` com campos `id`, `professional`, `dayOfWeek`, `startTime`, `endTime`, `createdAt`, `updatedAt`.
-- [ ] T007 [P] Criar `AvailabilityRepository.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/` com método para buscar períodos por profissional e dia da semana.
-- [ ] T008 [P] Criar `AvailabilityNotFoundException.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/`.
-- [ ] T009 [P] Criar `InvalidAvailabilityException.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/`.
-- [ ] T010 [P] Criar `OverlappingAvailabilityException.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/`.
-- [ ] T011 [P] Criar `CreateAvailabilityRequest.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/` com validações de `dayOfWeek`, `startTime` e `endTime`.
-- [ ] T012 [P] Criar `UpdateAvailabilityRequest.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/` com os mesmos campos do request de criação.
-- [ ] T013 [P] Criar `AvailabilityResponse.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/` com os campos de resposta.
-- [ ] T014 Criar `AvailabilityMapper.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/` com conversões entre entity, request e response (depende de T006, T011, T012, T013).
+- [x] T005 Criar migration `V3__create_availability_table.sql` em `src/main/resources/db/migration/` com: (a) criação da tabela `availability` incluindo FK para `professionals`, constraints de dia da semana (`1`-`7`) e de horário (`end_time > start_time`), índice `idx_availability_professional_day`; (b) instrução de rollback `DROP TABLE availability;`.
+- [x] T006 [P] Criar `AvailabilityEntity.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/` com campos `id`, `professional`, `dayOfWeek`, `startTime`, `endTime`, `createdAt`, `updatedAt`.
+- [x] T007 [P] Criar `AvailabilityRepository.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/` com método para buscar períodos por profissional e dia da semana.
+- [x] T008 [P] Criar `AvailabilityNotFoundException.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/`.
+- [x] T009 [P] Criar `InvalidAvailabilityException.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/`.
+- [x] T010 [P] Criar `OverlappingAvailabilityException.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/domain/availability/`.
+- [x] T011 [P] Criar `CreateAvailabilityRequest.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/` com validações de `dayOfWeek`, `startTime` e `endTime`.
+- [x] T012 [P] Criar `UpdateAvailabilityRequest.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/` com os mesmos campos do request de criação.
+- [x] T013 [P] Criar `AvailabilityResponse.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/` com os campos de resposta.
+- [x] T014 Criar `AvailabilityMapper.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/` com conversões entre entity, request e response (depende de T006, T011, T012, T013).
 
 **Checkpoint**: Foundational pronta — migrations, entidade, repositório, exceções e DTOs disponíveis para as user stories.
 
@@ -56,13 +56,13 @@
 
 ### Tests for User Story 1
 
-- [ ] T015 [P] [US1] Criar teste unitário `AvailabilityEntityTest.java` em `src/test/java/com/augustoomb/api_barbearia_do_ze/domain/availability/` validando criação da entidade.
-- [ ] T016 [P] [US1] Criar teste unitário `AvailabilityServiceTest.java` em `src/test/java/com/augustoomb/api_barbearia_do_ze/application/availability/` para criação com profissional inexistente, horário inválido e sobreposição.
+- [x] T015 [P] [US1] Criar teste unitário `AvailabilityEntityTest.java` em `src/test/java/com/augustoomb/api_barbearia_do_ze/domain/availability/` validando criação da entidade.
+- [x] T016 [P] [US1] Criar teste unitário `AvailabilityServiceTest.java` em `src/test/java/com/augustoomb/api_barbearia_do_ze/application/availability/` para criação com profissional inexistente, horário inválido e sobreposição.
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Implementar método `create(UUID professionalId, CreateAvailabilityRequest request)` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/AvailabilityService.java` (valida profissional, horário e sobreposição).
-- [ ] T018 [US1] Implementar endpoint `POST /api/v1/professionals/{professionalId}/availability` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/AvailabilityController.java`.
+- [x] T017 [US1] Implementar método `create(UUID professionalId, CreateAvailabilityRequest request)` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/AvailabilityService.java` (valida profissional, horário e sobreposição).
+- [x] T018 [US1] Implementar endpoint `POST /api/v1/professionals/{professionalId}/availability` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/AvailabilityController.java`.
 
 **Checkpoint**: User Story 1 funcional e testável independentemente.
 
@@ -76,13 +76,13 @@
 
 ### Tests for User Story 2
 
-- [ ] T019 [P] [US2] Adicionar testes unitários em `AvailabilityServiceTest.java` para listagem de disponibilidades por profissional.
-- [ ] T020 [P] [US2] Criar teste de integração `AvailabilityControllerIntegrationTest.java` em `src/test/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/` para o endpoint de listagem.
+- [x] T019 [P] [US2] Adicionar testes unitários em `AvailabilityServiceTest.java` para listagem de disponibilidades por profissional.
+- [x] T020 [P] [US2] Criar teste de integração `AvailabilityControllerIntegrationTest.java` em `src/test/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/` para o endpoint de listagem.
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Implementar método `findByProfessional(UUID professionalId)` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/AvailabilityService.java`, retornando períodos ordenados por dia da semana e horário de início crescentes.
-- [ ] T022 [US2] Implementar endpoint `GET /api/v1/professionals/{professionalId}/availability` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/AvailabilityController.java`.
+- [x] T021 [US2] Implementar método `findByProfessional(UUID professionalId)` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/AvailabilityService.java`, retornando períodos ordenados por dia da semana e horário de início crescentes.
+- [x] T022 [US2] Implementar endpoint `GET /api/v1/professionals/{professionalId}/availability` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/AvailabilityController.java`.
 
 **Checkpoint**: User Stories 1 e 2 funcionam independentemente.
 
@@ -96,16 +96,16 @@
 
 ### Tests for User Story 3
 
-- [ ] T023 [P] [US3] Adicionar testes unitários em `AvailabilityServiceTest.java` para alteração com profissional inexistente, disponibilidade inexistente, horário inválido, sobreposição e tentativa de mudar profissional.
-- [ ] T024 [P] [US3] Adicionar testes unitários em `AvailabilityServiceTest.java` para remoção de disponibilidade existente e inexistente.
-- [ ] T025 [P] [US3] Adicionar testes de integração em `AvailabilityControllerIntegrationTest.java` para os endpoints de alteração e remoção.
+- [x] T023 [P] [US3] Adicionar testes unitários em `AvailabilityServiceTest.java` para alteração com profissional inexistente, disponibilidade inexistente, horário inválido, sobreposição e tentativa de mudar profissional.
+- [x] T024 [P] [US3] Adicionar testes unitários em `AvailabilityServiceTest.java` para remoção de disponibilidade existente e inexistente.
+- [x] T025 [P] [US3] Adicionar testes de integração em `AvailabilityControllerIntegrationTest.java` para os endpoints de alteração e remoção.
 
 ### Implementation for User Story 3
 
-- [ ] T026 [US3] Implementar método `update(UUID professionalId, UUID availabilityId, UpdateAvailabilityRequest request)` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/AvailabilityService.java`.
-- [ ] T027 [US3] Implementar método `delete(UUID professionalId, UUID availabilityId)` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/AvailabilityService.java`.
-- [ ] T028 [US3] Implementar endpoint `PUT /api/v1/professionals/{professionalId}/availability/{availabilityId}` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/AvailabilityController.java`.
-- [ ] T029 [US3] Implementar endpoint `DELETE /api/v1/professionals/{professionalId}/availability/{availabilityId}` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/AvailabilityController.java`.
+- [x] T026 [US3] Implementar método `update(UUID professionalId, UUID availabilityId, UpdateAvailabilityRequest request)` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/AvailabilityService.java`.
+- [x] T027 [US3] Implementar método `delete(UUID professionalId, UUID availabilityId)` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/AvailabilityService.java`.
+- [x] T028 [US3] Implementar endpoint `PUT /api/v1/professionals/{professionalId}/availability/{availabilityId}` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/AvailabilityController.java`.
+- [x] T029 [US3] Implementar endpoint `DELETE /api/v1/professionals/{professionalId}/availability/{availabilityId}` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/AvailabilityController.java`.
 
 **Checkpoint**: Todas as user stories funcionam independentemente.
 
@@ -115,11 +115,26 @@
 
 **Purpose**: Ajustes que afetam múltiplas user stories e alinhamento com a Constitution.
 
-- [ ] T030 [P] Atualizar `GlobalExceptionHandler.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/` para traduzir `AvailabilityNotFoundException`, `InvalidAvailabilityException` e `OverlappingAvailabilityException` em respostas HTTP padronizadas.
-- [ ] T031 [P] Adicionar anotações OpenAPI/SpringDoc no `AvailabilityController.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/`.
-- [ ] T032 [P] Adicionar testes de integração restantes em `AvailabilityControllerIntegrationTest.java` cobrindo cenários de borda (período consecutivo, sobreposição, horário inválido, profissional inexistente).
-- [ ] T033 Executar `quickstart.md` validation manualmente com curls/HTTP client e verificar todos os cenários.
-- [ ] T034 Executar `./mvnw test` e garantir que todos os testes unitários e de integração da feature passam.
+- [x] T030 [P] Atualizar `GlobalExceptionHandler.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/` para traduzir `AvailabilityNotFoundException`, `InvalidAvailabilityException` e `OverlappingAvailabilityException` em respostas HTTP padronizadas.
+- [x] T031 [P] Adicionar anotações OpenAPI/SpringDoc no `AvailabilityController.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/infrastructure/web/`.
+- [x] T032 [P] Adicionar testes de integração restantes em `AvailabilityControllerIntegrationTest.java` cobrindo cenários de borda (período consecutivo, sobreposição, horário inválido, profissional inexistente).
+- [x] T033 Executar `quickstart.md` validation manualmente com curls/HTTP client e verificar todos os cenários.
+- [x] T034 Executar `./mvnw test` e garantir que todos os testes unitários e de integração da feature passam.
+
+---
+
+## Phase 7: Convergence
+
+**Purpose**: Ajustes identificados durante `/speckit.converge` para alinhar implementação com `spec.md`, `plan.md`, `data-model.md` e `contracts/api.md`.
+
+- [x] T035 [P] Adicionar validação `@Min(1) @Max(7)` no campo `dayOfWeek` de `CreateAvailabilityRequest.java` e `UpdateAvailabilityRequest.java` em `src/main/java/com/augustoomb/api_barbearia_do_ze/application/availability/`, garantindo rejeição HTTP 400 para valores fora do intervalo 1-7.
+- [x] T036 [P] Adicionar testes de integração em `AvailabilityControllerIntegrationTest.java` cobrindo rejeição de `dayOfWeek` inválido (ex.: 0, 8, nulo).
+- [x] T037 Implementar filtro opcional `dayOfWeek` no endpoint `GET /api/v1/professionals/{professionalId}/availability` conforme `contracts/api.md`, adicionando suporte no `AvailabilityService.java` e no `AvailabilityRepository.java`.
+- [x] T038 Adicionar testes de integração em `AvailabilityControllerIntegrationTest.java` para o filtro `dayOfWeek` na listagem de disponibilidades.
+- [x] T039 Criar migration `V4__add_availability_day_of_week_check.sql` em `src/main/resources/db/migration/` para adicionar constraint CHECK garantindo que `day_of_week` represente um dia válido, com instrução de rollback.
+- [x] T040 [P] Incluir códigos de erro padronizados (`PROFESSIONAL_NOT_FOUND`, `AVAILABILITY_NOT_FOUND`, `INVALID_AVAILABILITY_PERIOD`, `OVERLAPPING_AVAILABILITY`) nas respostas de erro da feature availability, ajustando `ApiResponse.java`, as exceções de domínio e `GlobalExceptionHandler.java` conforme `contracts/api.md`.
+- [x] T041 [P] Atualizar testes de integração em `AvailabilityControllerIntegrationTest.java` para verificar os códigos de erro padronizados nas respostas.
+- [x] T042 Executar `./mvnw test` e validar manualmente os cenários do `quickstart.md` após as correções de convergência.
 
 ---
 

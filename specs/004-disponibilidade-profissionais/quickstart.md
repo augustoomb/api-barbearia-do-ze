@@ -29,10 +29,12 @@ Este guia descreve como validar a feature de disponibilidade de profissionais de
 
 ## Validation Scenarios
 
+> **Nota sobre `dayOfWeek`**: os exemplos usam o padrão ISO-8601, onde `1` = segunda-feira e `7` = domingo.
+
 ### Scenario 1 — Cadastrar disponibilidade válida
 
 ```bash
-curl -X POST http://localhost:8080/professionals/{professionalId}/availability \
+curl -X POST http://localhost:8080/api/v1/professionals/{professionalId}/availability \
   -H "Content-Type: application/json" \
   -d '{
     "dayOfWeek": 1,
@@ -46,7 +48,7 @@ curl -X POST http://localhost:8080/professionals/{professionalId}/availability \
 ### Scenario 2 — Cadastrar período consecutivo no mesmo dia
 
 ```bash
-curl -X POST http://localhost:8080/professionals/{professionalId}/availability \
+curl -X POST http://localhost:8080/api/v1/professionals/{professionalId}/availability \
   -H "Content-Type: application/json" \
   -d '{
     "dayOfWeek": 1,
@@ -60,7 +62,7 @@ curl -X POST http://localhost:8080/professionals/{professionalId}/availability \
 ### Scenario 3 — Rejeitar período com horário inválido
 
 ```bash
-curl -X POST http://localhost:8080/professionals/{professionalId}/availability \
+curl -X POST http://localhost:8080/api/v1/professionals/{professionalId}/availability \
   -H "Content-Type: application/json" \
   -d '{
     "dayOfWeek": 1,
@@ -74,7 +76,7 @@ curl -X POST http://localhost:8080/professionals/{professionalId}/availability \
 ### Scenario 4 — Rejeitar período sobreposto
 
 ```bash
-curl -X POST http://localhost:8080/professionals/{professionalId}/availability \
+curl -X POST http://localhost:8080/api/v1/professionals/{professionalId}/availability \
   -H "Content-Type: application/json" \
   -d '{
     "dayOfWeek": 1,
@@ -88,7 +90,7 @@ curl -X POST http://localhost:8080/professionals/{professionalId}/availability \
 ### Scenario 5 — Consultar disponibilidades
 
 ```bash
-curl http://localhost:8080/professionals/{professionalId}/availability
+curl http://localhost:8080/api/v1/professionals/{professionalId}/availability
 ```
 
 **Expected outcome**: HTTP 200 com lista contendo os períodos cadastrados.
@@ -96,7 +98,7 @@ curl http://localhost:8080/professionals/{professionalId}/availability
 ### Scenario 6 — Alterar disponibilidade
 
 ```bash
-curl -X PUT http://localhost:8080/professionals/{professionalId}/availability/{availabilityId} \
+curl -X PUT http://localhost:8080/api/v1/professionals/{professionalId}/availability/{availabilityId} \
   -H "Content-Type: application/json" \
   -d '{
     "dayOfWeek": 2,
@@ -110,7 +112,7 @@ curl -X PUT http://localhost:8080/professionals/{professionalId}/availability/{a
 ### Scenario 7 — Remover disponibilidade
 
 ```bash
-curl -X DELETE http://localhost:8080/professionals/{professionalId}/availability/{availabilityId}
+curl -X DELETE http://localhost:8080/api/v1/professionals/{professionalId}/availability/{availabilityId}
 ```
 
 **Expected outcome**: HTTP 204.
@@ -118,7 +120,7 @@ curl -X DELETE http://localhost:8080/professionals/{professionalId}/availability
 ### Scenario 8 — Profissional inexistente
 
 ```bash
-curl -X POST http://localhost:8080/professionals/00000000-0000-0000-0000-000000000000/availability \
+curl -X POST http://localhost:8080/api/v1/professionals/00000000-0000-0000-0000-000000000000/availability \
   -H "Content-Type: application/json" \
   -d '{
     "dayOfWeek": 1,

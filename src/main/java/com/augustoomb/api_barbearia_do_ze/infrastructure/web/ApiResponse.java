@@ -25,13 +25,17 @@ public record ApiResponse<T>(
         return new ApiResponse<>(null, List.of(new ApiError(message)), Instant.now());
     }
 
-    public static <T> ApiResponse<T> error(String field, String message) {
-        return new ApiResponse<>(null, List.of(new ApiError(field, message)), Instant.now());
+    public static <T> ApiResponse<T> error(String code, String message) {
+        return new ApiResponse<>(null, List.of(new ApiError(code, null, message)), Instant.now());
     }
 
-    public record ApiError(String field, String message) {
+    public record ApiError(String code, String field, String message) {
         public ApiError(String message) {
-            this(null, message);
+            this(null, null, message);
+        }
+
+        public ApiError(String field, String message) {
+            this(null, field, message);
         }
     }
 }

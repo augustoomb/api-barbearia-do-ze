@@ -14,6 +14,8 @@
 }
 ```
 
+> **Nota sobre `dayOfWeek`**: o valor segue o padrão ISO-8601, onde `1` representa segunda-feira e `7` representa domingo.
+
 ---
 
 ## 1. Create Availability
@@ -42,7 +44,7 @@ Cria um novo período de disponibilidade para um profissional.
 
 | Field | Type | Constraints | Description |
 |-------|------|-------------|-------------|
-| `dayOfWeek` | Integer | `1` a `7`, required | Dia da semana. |
+| `dayOfWeek` | Integer | `1` a `7`, required | Dia da semana. `1` = segunda-feira, `7` = domingo. |
 | `startTime` | String (ISO-8601 time) | required, format `HH:mm` | Horário de início. |
 | `endTime` | String (ISO-8601 time) | required, format `HH:mm`, > `startTime` | Horário de término. |
 
@@ -107,7 +109,7 @@ Retorna todos os períodos de disponibilidade de um profissional, ordenados por 
 
 | Name | Type | Description |
 |------|------|-------------|
-| `dayOfWeek` | Integer | Filtrar por dia da semana (`1` a `7`). |
+| `dayOfWeek` | Integer | Filtrar por dia da semana (`1` = segunda-feira a `7` = domingo). |
 
 ### Responses
 

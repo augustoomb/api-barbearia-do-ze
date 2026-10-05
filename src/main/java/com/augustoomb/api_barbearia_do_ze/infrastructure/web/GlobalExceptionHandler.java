@@ -1,5 +1,8 @@
 package com.augustoomb.api_barbearia_do_ze.infrastructure.web;
 
+import com.augustoomb.api_barbearia_do_ze.domain.availability.AvailabilityNotFoundException;
+import com.augustoomb.api_barbearia_do_ze.domain.availability.InvalidAvailabilityException;
+import com.augustoomb.api_barbearia_do_ze.domain.availability.OverlappingAvailabilityException;
 import com.augustoomb.api_barbearia_do_ze.domain.professional.DuplicateProfessionalEmailException;
 import com.augustoomb.api_barbearia_do_ze.domain.professional.InvalidProfessionalException;
 import com.augustoomb.api_barbearia_do_ze.domain.professional.ProfessionalNotFoundException;
@@ -47,7 +50,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleProfessionalNotFound(ProfessionalNotFoundException ex, HttpServletRequest request) {
         log.warn("Profissional não encontrado: {}", request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ApiResponse.error(ex.getMessage()));
+                .body(ApiResponse.error(ex.getCode(), ex.getMessage()));
     }
 
     @ExceptionHandler(DuplicateProfessionalEmailException.class)
@@ -62,6 +65,27 @@ public class GlobalExceptionHandler {
         log.warn("Requisição inválida para profissional: {} - {}", request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AvailabilityNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAvailabilityNotFound(AvailabilityNotFoundException ex, HttpServletRequest request) {
+        log.warn("Período de disponibilidade não encontrado: {}", request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(ex.getCode(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidAvailabilityException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidAvailability(InvalidAvailabilityException ex, HttpServletRequest request) {
+        log.warn("Requisição inválida para disponibilidade: {} - {}", request.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ex.getCode(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(OverlappingAvailabilityException.class)
+    public ResponseEntity<ApiResponse<Void>> handleOverlappingAvailability(OverlappingAvailabilityException ex, HttpServletRequest request) {
+        log.warn("Conflito de disponibilidade: {} - {}", request.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ex.getCode(), ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

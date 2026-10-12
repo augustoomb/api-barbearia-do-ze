@@ -6,34 +6,36 @@ Sistema de agendamento de serviços para uma barbearia.
 
 ## Features
 
-### Feature 001 — Cadastro de Serviços
+### Feature 001 — Cadastro de Serviços [x]
 Permitir cadastrar e gerenciar os serviços oferecidos pela barbearia.
 
-### Feature 002 — Cadastro de Profissionais
+### Feature 002 — Ajustes de Infra [x]
+
+### Feature 003 — Cadastro de Profissionais [x]
 Permitir cadastrar e gerenciar os profissionais que realizam os serviços.
 
-### Feature 003 — Disponibilidade dos Profissionais
+### Feature 004 — Disponibilidade dos Profissionais [x]
 Permitir definir e consultar os horários em que cada profissional pode atender.
 
-### Feature 004 — Consulta de Horários Disponíveis
+### Feature 005 — Consulta de Horários Disponíveis
 Calcular os horários disponíveis para determinado serviço e profissional.
 
-### Feature 005 — Criação de Agendamento
+### Feature 006 — Criação de Agendamento
 Permitir que um cliente reserve um horário.
 
-### Feature 006 — Cancelamento de Agendamento
+### Feature 007 — Cancelamento de Agendamento
 Permitir cancelar um agendamento existente.
 
-### Feature 007 — Notificações de Agendamento
+### Feature 008 — Notificações de Agendamento
 Publicar eventos de criação e cancelamento no RabbitMQ.
 
-### Feature 008 — Envio de E-mails
+### Feature 009 — Envio de E-mails
 Consumir eventos do RabbitMQ e enviar e-mails de confirmação/cancelamento.
 
-### Feature 009 — Lembretes
+### Feature 010 — Lembretes
 Executar job diário para enviar lembretes dos agendamentos do dia seguinte.
 
-### Feature 010 — Observabilidade
+### Feature 011 — Observabilidade
 Adicionar métricas, logs, health checks e dashboards.
 
 -----

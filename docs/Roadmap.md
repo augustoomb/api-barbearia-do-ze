@@ -17,25 +17,28 @@ Permitir cadastrar e gerenciar os profissionais que realizam os serviços.
 ### Feature 004 — Disponibilidade dos Profissionais [x]
 Permitir definir e consultar os horários em que cada profissional pode atender.
 
-### Feature 005 — Consulta de Horários Disponíveis
+### Feature 005 — Associação de serviços a Profissionais [...]
+Cria a associação entre profissionais e serviços.
+
+### Feature 006 — Consulta de Horários Disponíveis []
 Calcular os horários disponíveis para determinado serviço e profissional.
 
-### Feature 006 — Criação de Agendamento
+### Feature 007 — Criação de Agendamento []
 Permitir que um cliente reserve um horário.
 
-### Feature 007 — Cancelamento de Agendamento
+### Feature 008 — Cancelamento de Agendamento []
 Permitir cancelar um agendamento existente.
 
-### Feature 008 — Notificações de Agendamento
+### Feature 009 — Notificações de Agendamento []
 Publicar eventos de criação e cancelamento no RabbitMQ.
 
-### Feature 009 — Envio de E-mails
+### Feature 010 — Envio de E-mails []
 Consumir eventos do RabbitMQ e enviar e-mails de confirmação/cancelamento.
 
-### Feature 010 — Lembretes
+### Feature 011 — Lembretes []
 Executar job diário para enviar lembretes dos agendamentos do dia seguinte.
 
-### Feature 011 — Observabilidade
+### Feature 012 — Observabilidade []
 Adicionar métricas, logs, health checks e dashboards.
 
 -----
